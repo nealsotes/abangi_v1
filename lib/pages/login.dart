@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 import 'package:abangi_v1/global_utils.dart';
+import 'package:abangi_v1/pages/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:abangi_v1/pages/dash.dart';
@@ -18,8 +20,20 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const Scaffold(
-        body: login(),
+      home: Scaffold(
+        body: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasData) {
+                // ignore: prefer_const_constructors
+                return DashBoard();
+              }
+              // ignore: prefer_const_constructors
+              return login();
+            }),
       ),
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -123,13 +137,15 @@ class _LoginState extends State<login> {
                     margin: const EdgeInsets.only(top: 15),
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          onSurface: const Color.fromRGBO(0, 176, 236, 1),
-                        ),
-                        child: Text(
-                          _isLoading ? 'Loging in...' : 'Login',
-                        ),
-                        onPressed: () {})),
+                      style: ElevatedButton.styleFrom(
+                        onSurface: const Color.fromRGBO(0, 176, 236, 1),
+                      ),
+                      // ignore: sort_child_properties_last
+                      child: Text(
+                        _isLoading ? 'Loging in...' : 'Login',
+                      ),
+                      onPressed: logIn,
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -161,5 +177,10 @@ class _LoginState extends State<login> {
                 ),
               ],
             )));
+  }
+
+  void logIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: mailController.text, password: passwordController.text);
   }
 }

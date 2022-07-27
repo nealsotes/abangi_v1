@@ -7,13 +7,14 @@ import 'package:abangi_v1/pages/home.dart';
 import 'package:abangi_v1/pages/login.dart';
 import 'package:abangi_v1/pages/messages.dart';
 import 'package:abangi_v1/pages/welcome.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-void main() => runApp(const Home());
+void main() => runApp(const DashBoard());
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+class DashBoard extends StatelessWidget {
+  const DashBoard({Key? key}) : super(key: key);
 
   static const String _title = 'Flutter Code Sample';
 

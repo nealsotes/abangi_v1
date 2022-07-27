@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 // ignore: depend_on_referenced_packages
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class _MyStatefulWidgetState extends State<account> {
                   ),
                   // ignore: sort_child_properties_last
                   child: const Text('Logout'),
-                  onPressed: () {},
+                  onPressed: () => FirebaseAuth.instance.signOut(),
                 )),
           ],
         ));

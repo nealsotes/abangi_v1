@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors
 
 import 'package:abangi_v1/pages/welcome.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:abangi_v1/pages/signup.dart';
 import 'login.dart';
@@ -34,6 +35,7 @@ class home extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<home> {
   TextEditingController searchController = TextEditingController();
+  final user = FirebaseAuth.instance.currentUser;
   ParseUser? currentUser;
   Future<ParseUser?> getData() async {
     return null;
@@ -93,11 +95,11 @@ class _MyStatefulWidgetState extends State<home> {
                             children: [
                               Center(
                                 child: Text(
-                                  'let\'s Rent,',
+                                  user?.email ?? '',
                                   style: TextStyle(
                                       color: Color.fromRGBO(0, 176, 236, 1),
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 35),
+                                      fontSize: 20),
                                 ),
                               )
                             ],
