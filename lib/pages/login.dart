@@ -1,9 +1,11 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, prefer_const_constructors
 
 import 'dart:convert';
 import 'package:abangi_v1/global_utils.dart';
 import 'package:abangi_v1/pages/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:abangi_v1/pages/dash.dart';
@@ -13,12 +15,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(const Login());
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: StreamBuilder(
@@ -180,7 +185,19 @@ class _LoginState extends State<login> {
   }
 
   void logIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: mailController.text, password: passwordController.text);
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Center(child: CircularProgressIndicator()));
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: mailController.text, password: passwordController.text);
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) {
+        print(e.code);
+      }
+    }
+
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }
