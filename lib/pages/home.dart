@@ -95,7 +95,7 @@ class _MyStatefulWidgetState extends State<home> {
                             children: [
                               Center(
                                 child: Text(
-                                  user?.email ?? '',
+                                  'Welcome to Abangi',
                                   style: TextStyle(
                                       color: Color.fromRGBO(0, 176, 236, 1),
                                       fontWeight: FontWeight.w600,

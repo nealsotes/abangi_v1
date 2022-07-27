@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:abangi_v1/global_utils.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:abangi_v1/pages/login.dart';
+import 'package:get/get.dart';
 
 void main() => runApp(const SignUp());
 
@@ -13,6 +15,7 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       home: const Scaffold(
         body: MyStatefulWidget(),
@@ -77,29 +80,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   padding: const EdgeInsets.all(4),
                 ),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: TextFormField(
-                    // ignore: prefer_const_constructors
-                    style: TextStyle(fontSize: 14.0),
-                    keyboardType: TextInputType.phone,
-                    controller: nameController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Name',
-                    ),
-                    validator: (String? val) {
-                      if (val!.isEmpty) {
-                        return "* Required";
-                      } else if (!RegExp(r'^[a-z A-Z]+$').hasMatch(val)) {
-                        return "Enter valid name";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: TextFormField(
                     // ignore: prefer_const_constructors
                     style: TextStyle(fontSize: 14.0),
@@ -109,57 +90,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       border: OutlineInputBorder(),
                       labelText: 'Email',
                     ),
-                    validator: (String? val) {
-                      if (val!.isEmpty) {
-                        return "* Required";
-                      } else if (!RegExp(r'^(?:\d{10}|\w+@\w+\.\w{2,3})$')
-                          .hasMatch(val)) {
-                        return "Enter valid email";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: TextFormField(
-                    // ignore: prefer_const_constructors
-                    style: TextStyle(fontSize: 14.0),
-                    controller: addressController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Address',
-                    ),
-                    validator: (String? val) {
-                      if (val!.isEmpty) {
-                        return "* Required";
-                      } else if (!RegExp(r'^[a-z A-Z]+$').hasMatch(val)) {
-                        return "Enter valid address";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: TextFormField(
-                    controller: mobileNumberController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Phone',
-                    ),
-                    validator: (String? val) {
-                      if (val!.isEmpty) {
-                        return "* Required";
-                      } else if (!RegExp(r'^\+[1-9]{1}[0-9]{3,14}$')
-                          .hasMatch(val)) {
-                        return "Enter valid phone number";
-                      } else {
-                        return null;
-                      }
-                    },
+                    validator: (email) =>
+                        email != null && !EmailValidator.validate(email)
+                            ? 'Enter valid email'
+                            : null,
                   ),
                 ),
                 Container(
@@ -170,40 +104,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
                     controller: passwordController,
-                    validator: (String? val) {
-                      if (val!.isEmpty) {
-                        return "* Required";
-                      } else if (val.length < 6) {
-                        return "Password should be atleast 6 characters";
-                      } else {
-                        return null;
-                      }
-                    },
+                    validator: (value) => value != null && value.length < 6
+                        ? 'Password must be at least 6 characters'
+                        : null,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: TextFormField(
-                    // ignore: prefer_const_constructors
-                    style: TextStyle(fontSize: 14.0),
-                    obscureText: true,
-                    controller: confirmPasswordController,
-                    validator: (String? val) {
-                      if (val!.isEmpty) {
-                        return '* Required';
-                      }
-                      if (val != passwordController.text) {
-                        return 'Not Match';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Confirm Password',
                     ),
                   ),
                 ),
@@ -212,11 +118,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     margin: const EdgeInsets.only(top: 15),
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            onSurface: const Color.fromRGBO(0, 176, 236, 1)),
-                        // ignore: sort_child_properties_last
-                        child: Text(_isLoading ? "Signing up..." : 'Sign Up'),
-                        onPressed: () {})),
+                      style: ElevatedButton.styleFrom(
+                          onSurface: const Color.fromRGBO(0, 176, 236, 1)),
+                      // ignore: sort_child_properties_last
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 20),
+                        ),
+                      ),
+                      onPressed: signUp,
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -248,5 +164,30 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 ),
               ],
             )));
+  }
+
+  void signUp() async {
+    final isValid = _formKey.currentState!.validate();
+    if (isValid) return;
+
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      if (e.code == 'weak-password') {
+        print('Weak Password');
+      } else if (e.code == 'email-already-in-use') {
+        print('Email already in use');
+      } else if (e.code == 'invalid-email') {
+        print('Invalid Email');
+      } else if (e.code == 'network-request-failed') {
+        print('Network Error');
+      } else {
+        print('Unknown Error');
+      }
+    }
+    // ignore: use_build_context_synchronously
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }

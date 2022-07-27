@@ -29,9 +29,6 @@ class Login extends StatelessWidget {
         body: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
               if (snapshot.hasData) {
                 // ignore: prefer_const_constructors
                 return DashBoard();
@@ -56,7 +53,6 @@ class login extends StatefulWidget {
 }
 
 class _LoginState extends State<login> {
-  bool _isLoading = false;
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late ScaffoldState scaffoldState;
@@ -96,16 +92,11 @@ class _LoginState extends State<login> {
                       border: OutlineInputBorder(),
                       labelText: 'Email',
                     ),
-                    validator: (String? val) {
-                      if (val!.isEmpty) {
-                        return "Please enter email";
-                      } else if (!RegExp(r'^(?:\d{10}|\w+@\w+\.\w{2,3})$')
-                          .hasMatch(val)) {
-                        return "Enter valid email";
-                      } else {
-                        return null;
-                      }
-                    },
+                    validator: (email) => email!.isEmpty
+                        ? 'Please enter your email'
+                        : email.contains('@')
+                            ? null
+                            : 'Please enter a valid email',
                   ),
                 ),
                 Container(
@@ -117,12 +108,11 @@ class _LoginState extends State<login> {
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                     ),
-                    validator: (String? val) {
-                      if (val!.isEmpty) {
-                        return 'Please enter password';
-                      }
-                      return null;
-                    },
+                    validator: (password) => password!.isEmpty
+                        ? 'Please enter your password'
+                        : password.length < 6
+                            ? 'Password must be at least 6 characters'
+                            : null,
                   ),
                 ),
                 Container(
@@ -146,8 +136,9 @@ class _LoginState extends State<login> {
                         onSurface: const Color.fromRGBO(0, 176, 236, 1),
                       ),
                       // ignore: sort_child_properties_last
-                      child: Text(
-                        _isLoading ? 'Loging in...' : 'Login',
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(color: Colors.white),
                       ),
                       onPressed: logIn,
                     )),
@@ -186,12 +177,15 @@ class _LoginState extends State<login> {
 
   void logIn() async {
     showDialog(
-        context: context,
         barrierDismissible: false,
-        builder: (context) => Center(child: CircularProgressIndicator()));
+        context: context,
+        builder: (context) {
+          return Center(child: CircularProgressIndicator());
+        });
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: mailController.text, password: passwordController.text);
+          email: mailController.text.trim(),
+          password: passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
       if (kDebugMode) {
         print(e.code);
