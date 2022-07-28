@@ -1,11 +1,7 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors
-
-import 'package:abangi_v1/pages/welcome.dart';
+import 'package:abangi_v1/pages/dash.dart';
+import 'package:abangi_v1/pages/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:abangi_v1/pages/signup.dart';
-import 'login.dart';
-import 'package:http/http.dart' as http;
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 void main() => runApp(Home());
@@ -16,8 +12,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const Scaffold(
-        body: home(),
+      home: Scaffold(
+        body: HomeWidget(),
       ),
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -26,14 +22,14 @@ class Home extends StatelessWidget {
   }
 }
 
-class home extends StatefulWidget {
-  const home({Key? key}) : super(key: key);
+class HomeWidget extends StatefulWidget {
+  const HomeWidget({Key? key}) : super(key: key);
 
   @override
-  State<home> createState() => _MyStatefulWidgetState();
+  State<HomeWidget> createState() => _MyStatefulWidgetState();
 }
 
-class _MyStatefulWidgetState extends State<home> {
+class _MyStatefulWidgetState extends State<HomeWidget> {
   TextEditingController searchController = TextEditingController();
   final user = FirebaseAuth.instance.currentUser;
   ParseUser? currentUser;

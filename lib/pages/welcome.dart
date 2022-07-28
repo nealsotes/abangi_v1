@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:abangi_v1/pages/signup.dart';
 import 'login.dart';
-import 'package:introduction_screen/introduction_screen.dart';
 
 void main() => runApp(Welcome());
 
@@ -15,23 +14,9 @@ class Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return const Center(child: Text('Error'));
-              } else if (snapshot.hasData) {
-                // ignore: prefer_const_constructors
-                return DashBoard();
-              }
-              // ignore: prefer_const_constructors
-              return login();
-            }),
+        body: welcome(),
       ),
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -115,7 +100,7 @@ class _MyStatefulWidgetState extends State<welcome> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignUp()),
+                      MaterialPageRoute(builder: (context) => SignUp()),
                     );
                   },
                 )),

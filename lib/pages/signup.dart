@@ -1,13 +1,9 @@
-import 'dart:convert';
-
-import 'package:abangi_v1/global_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:abangi_v1/pages/login.dart';
-import 'package:get/get.dart';
 
-void main() => runApp(const SignUp());
+import '../main.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -15,10 +11,9 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       home: const Scaffold(
-        body: MyStatefulWidget(),
+        body: SignUpWidget(),
       ),
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -27,14 +22,14 @@ class SignUp extends StatelessWidget {
   }
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+class SignUpWidget extends StatefulWidget {
+  const SignUpWidget({Key? key}) : super(key: key);
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<SignUpWidget> createState() => _MyStatefulWidgetState();
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _MyStatefulWidgetState extends State<SignUpWidget> {
   TextEditingController nameController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -42,7 +37,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +160,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             )));
   }
 
-  void signUp() async {
+  Future signUp() async {
     final isValid = _formKey.currentState!.validate();
     if (isValid) return;
 

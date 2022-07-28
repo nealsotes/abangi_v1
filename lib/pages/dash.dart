@@ -6,25 +6,21 @@ import 'package:abangi_v1/pages/create_listing.dart';
 import 'package:abangi_v1/pages/home.dart';
 import 'package:abangi_v1/pages/login.dart';
 import 'package:abangi_v1/pages/messages.dart';
-import 'package:abangi_v1/pages/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-void main() => runApp(const DashBoard());
 
 class DashBoard extends StatelessWidget {
   const DashBoard({Key? key}) : super(key: key);
-
-  static const String _title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: _title,
       // ignore: prefer_const_constructors
-      home: MyStatefulWidget(),
+      home: Scaffold(
+        body: DashBoardWidget(),
+      ),
+
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
           fontFamily: 'Poppins'),
@@ -32,19 +28,19 @@ class DashBoard extends StatelessWidget {
   }
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+class DashBoardWidget extends StatefulWidget {
+  const DashBoardWidget({Key? key}) : super(key: key);
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<DashBoardWidget> createState() => _MyStatefulWidgetState();
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _MyStatefulWidgetState extends State<DashBoardWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    home(),
+    HomeWidget(),
     activity(),
     createListing(),
     messages(),

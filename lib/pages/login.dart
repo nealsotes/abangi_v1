@@ -1,21 +1,9 @@
-// ignore_for_file: unused_local_variable, prefer_const_constructors
-
-import 'dart:convert';
-import 'package:abangi_v1/global_utils.dart';
-import 'package:abangi_v1/pages/home.dart';
+import 'package:abangi_v1/pages/dash.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:abangi_v1/pages/dash.dart';
 import 'package:flutter/material.dart';
 import 'package:abangi_v1/pages/signup.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-void main() => runApp(const Login());
-
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+import '../main.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -24,9 +12,20 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const Scaffold(
-        body: login(),
-      ),
+      home: Scaffold(
+          body: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return const Center(child: Text('Error'));
+                } else if (snapshot.hasData) {
+                  return const DashBoard();
+                } else {
+                  return const login();
+                }
+              })),
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
           fontFamily: 'Poppins'),
@@ -170,7 +169,7 @@ class _LoginState extends State<login> {
         barrierDismissible: false,
         context: context,
         builder: (context) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         });
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
