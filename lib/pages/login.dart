@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(const Login());
 
-final navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -23,19 +23,9 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                // ignore: prefer_const_constructors
-                return DashBoard();
-              }
-              // ignore: prefer_const_constructors
-              return login();
-            }),
+      home: const Scaffold(
+        body: login(),
       ),
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -175,7 +165,7 @@ class _LoginState extends State<login> {
             )));
   }
 
-  void logIn() async {
+  Future logIn() async {
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -191,7 +181,6 @@ class _LoginState extends State<login> {
         print(e.code);
       }
     }
-
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }

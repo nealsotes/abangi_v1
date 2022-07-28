@@ -1,6 +1,8 @@
 // ignore_for_file: camel_case_types
 
+import 'package:abangi_v1/pages/dash.dart';
 import 'package:abangi_v1/pages/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:abangi_v1/pages/signup.dart';
 import 'login.dart';
@@ -13,9 +15,23 @@ class Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      home: const Scaffold(
-        body: welcome(),
+      home: Scaffold(
+        body: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return const Center(child: Text('Error'));
+              } else if (snapshot.hasData) {
+                // ignore: prefer_const_constructors
+                return DashBoard();
+              }
+              // ignore: prefer_const_constructors
+              return login();
+            }),
       ),
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
