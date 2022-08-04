@@ -1,3 +1,4 @@
+import 'package:abangi_v1/styles/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,7 @@ class SignUp extends StatelessWidget {
       home: const Scaffold(
         body: SignUpWidget(),
       ),
-      theme: ThemeData(
-          scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
-          fontFamily: 'Poppins'),
+      theme: Styles.primaryTheme,
     );
   }
 }
@@ -54,10 +53,7 @@ class _MyStatefulWidgetState extends State<SignUpWidget> {
                         margin: const EdgeInsets.only(top: 5),
                         child: const Text(
                           'Sign Up',
-                          style: TextStyle(
-                              color: Color.fromRGBO(0, 176, 236, 1),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 20),
+                          style: Styles.title,
                         )),
                     Container(
                       alignment: Alignment.topLeft,

@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types
 
+import 'package:abangi_v1/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:abangi_v1/pages/signup.dart';
 import 'login.dart';
@@ -15,9 +16,7 @@ class App extends StatelessWidget {
       home: const Scaffold(
         body: createListing(),
       ),
-      theme: ThemeData(
-          scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
-          fontFamily: 'Poppins'),
+      theme: Styles.primaryTheme,
     );
   }
 }
@@ -41,20 +40,12 @@ class _MyStatefulWidgetState extends State<createListing> {
             Container(
                 padding: const EdgeInsets.all(10),
                 margin: const EdgeInsets.only(top: 10),
-                child: const Text(
-                  'Create Listing',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 1, 17, 22),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 25),
-                )),
+                child: const Text('Create Listing', style: Styles.title)),
             Container(
               padding: const EdgeInsets.only(left: 10),
               child: const Text(
                 'Complete the information below to create listing.',
-                style: TextStyle(
-                  color: Colors.grey,
-                ),
+                style: Styles.caption,
               ),
             ),
             Container(
@@ -69,7 +60,7 @@ class _MyStatefulWidgetState extends State<createListing> {
               padding: const EdgeInsets.all(10),
               child: Text(
                 'Listing Title',
-                style: TextStyle(fontSize: 20, color: Colors.grey),
+                style: Styles.formHeader,
               ),
             ),
             Container(
@@ -86,7 +77,7 @@ class _MyStatefulWidgetState extends State<createListing> {
               padding: const EdgeInsets.all(10),
               child: Text(
                 'Category',
-                style: TextStyle(fontSize: 20, color: Colors.grey),
+                style: Styles.formHeader,
               ),
             ),
             Container(
@@ -103,7 +94,7 @@ class _MyStatefulWidgetState extends State<createListing> {
               padding: const EdgeInsets.all(10),
               child: Text(
                 'Sub Category',
-                style: TextStyle(fontSize: 20, color: Colors.grey),
+                style: Styles.formHeader,
               ),
             ),
             Container(
@@ -120,9 +111,10 @@ class _MyStatefulWidgetState extends State<createListing> {
               padding: const EdgeInsets.all(10),
               child: Text(
                 'Description',
-                style: TextStyle(fontSize: 20, color: Colors.grey),
+                style: Styles.formHeader,
               ),
             ),
+
             Container(
               padding: const EdgeInsets.all(10),
               child: TextFormField(),

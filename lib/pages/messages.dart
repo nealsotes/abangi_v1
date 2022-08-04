@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:abangi_v1/pages/signup.dart';
+import '../styles/styles.dart';
 import 'login.dart';
 
 void main() => runApp(App());
@@ -42,16 +43,18 @@ class _MyStatefulWidgetState extends State<messages> {
                 margin: const EdgeInsets.only(top: 10),
                 child: const Text(
                   'Messages',
-                  style: TextStyle(
-                      color: Color.fromRGBO(0, 176, 236, 1),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 35),
+                  style: Styles.title,
                 )),
 
             // ignore: avoid_unnecessary_containers
 
             Container(
-                padding: const EdgeInsets.all(10), child: Text('My Inquiries')),
+                padding: const EdgeInsets.all(10),
+                // ignore: prefer_const_constructors
+                child: Text(
+                  'My Inquiries',
+                  style: Styles.subtitle,
+                )),
           ],
         ));
   }

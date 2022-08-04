@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types
 
+import 'package:abangi_v1/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:abangi_v1/pages/signup.dart';
 import 'login.dart';
@@ -42,16 +43,18 @@ class _MyStatefulWidgetState extends State<activity> {
                 margin: const EdgeInsets.only(top: 10),
                 child: const Text(
                   'Activity',
-                  style: TextStyle(
-                      color: Color.fromRGBO(0, 176, 236, 1),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 35),
+                  style: Styles.title,
                 )),
 
             // ignore: avoid_unnecessary_containers
 
             Container(
-                padding: const EdgeInsets.all(10), child: Text('My Inquiries')),
+                padding: const EdgeInsets.all(10),
+                // ignore: prefer_const_constructors
+                child: Text(
+                  'My Inquiries',
+                  style: Styles.subtitle,
+                )),
           ],
         ));
   }

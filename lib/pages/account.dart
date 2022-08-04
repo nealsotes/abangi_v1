@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 // ignore: depend_on_referenced_packages
+import 'package:abangi_v1/styles/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,10 +49,7 @@ class _MyStatefulWidgetState extends State<account> {
                 margin: const EdgeInsets.only(top: 10),
                 child: const Text(
                   'Account',
-                  style: TextStyle(
-                      color: Color.fromRGBO(0, 176, 236, 1),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 35),
+                  style: Styles.title,
                 )),
 
             // ignore: avoid_unnecessary_containers
@@ -59,7 +57,11 @@ class _MyStatefulWidgetState extends State<account> {
             Container(
                 // ignore: prefer_const_constructors
                 padding: const EdgeInsets.all(10),
-                child: Text('My Inquiries')),
+                // ignore: prefer_const_constructors
+                child: Text(
+                  'My Inquiries',
+                  style: Styles.subtitle,
+                )),
             Container(
                 height: 50,
                 margin: const EdgeInsets.only(top: 15),
